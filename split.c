@@ -2,7 +2,7 @@
  * qrencode - QR Code encoder
  *
  * Input data splitter.
- * Copyright (C) 2006-2011 Kentaro Fukuchi <kentaro@fukuchi.org>
+ * Copyright (C) 2006-2017 Kentaro Fukuchi <kentaro@fukuchi.org>
  *
  * The following data / specifications are taken from
  * "Two dimensional symbol -- QR-code -- Basic Specification" (JIS X0510:2004)
@@ -44,9 +44,9 @@
 char *strdup(const char *s)
 {
 	size_t len = strlen(s) + 1;
-	void *new = malloc(len);
-	if(new == NULL) return NULL;
-	return (char *)memcpy(new, s, len);
+	void *newstring = malloc(len);
+	if(newstring == NULL) return NULL;
+	return (char *)memcpy(newstring, s, len);
 }
 #endif
 
@@ -75,10 +75,8 @@ static QRencodeMode Split_identifyMode(const char *string, QRencodeMode hint)
 	return QR_MODE_8;
 }
 
-static int Split_eatNum(const char *string, QRinput *input, QRencodeMode hint);
 static int Split_eatAn(const char *string, QRinput *input, QRencodeMode hint);
 static int Split_eat8(const char *string, QRinput *input, QRencodeMode hint);
-static int Split_eatKanji(const char *string, QRinput *input, QRencodeMode hint);
 
 static int Split_eatNum(const char *string, QRinput *input,QRencodeMode hint)
 {
@@ -144,9 +142,8 @@ static int Split_eatAn(const char *string, QRinput *input, QRencodeMode hint)
 				- QRinput_estimateBitsModeAn(q - string) /* - 4 - la */;
 			if(dif < 0) {
 				break;
-			} else {
-				p = q;
 			}
+			p = q;
 		} else {
 			p++;
 		}
@@ -222,9 +219,8 @@ static int Split_eat8(const char *string, QRinput *input, QRencodeMode hint)
 				- QRinput_estimateBitsMode8(q - string) /* - 4 - l8 */;
 			if(dif < 0) {
 				break;
-			} else {
-				p = q;
 			}
+			p = q;
 		} else if(mode == QR_MODE_AN) {
 			q = p;
 			while(isalnum(*q)) {
@@ -241,9 +237,8 @@ static int Split_eat8(const char *string, QRinput *input, QRencodeMode hint)
 				- QRinput_estimateBitsMode8(q - string) /* - 4 - l8 */;
 			if(dif < 0) {
 				break;
-			} else {
-				p = q;
 			}
+			p = q;
 		} else {
 			p++;
 		}
